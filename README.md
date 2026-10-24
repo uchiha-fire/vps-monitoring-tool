@@ -71,7 +71,9 @@ Works on all major distributions with zero external dependencies:
   ```
 - **Debian / Ubuntu (`.deb`)**:
   ```bash
-  sudo apt install ./dockmon_1.0.0_amd64.deb
+  cd ~/Downloads
+  sudo apt install ./dockmon-1.0.0.deb
+  # Or: sudo apt install ~/Downloads/dockmon-1.0.0.deb
   ```
 - **Fedora / RHEL (`.rpm`)**:
   ```bash
