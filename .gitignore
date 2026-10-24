@@ -6,6 +6,3 @@ release/
 .idea/
 *.log
 .DS_Store
-docs
-/docs
-./docs
