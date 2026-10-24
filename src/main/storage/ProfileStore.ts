@@ -5,6 +5,7 @@ import { SshProfile } from '../../common/types/ssh';
 
 export interface ProfileStoreOptions {
   filePath?: string;
+  homeDir?: string;
 }
 
 export class ProfileStore {
@@ -16,8 +17,10 @@ export class ProfileStore {
       this.filePath = options.filePath;
     } else {
       // Default to user home or current directory
-      const homeDir = process.env.HOME || process.env.USERPROFILE || '.';
-      const appDir = path.join(homeDir, '.vps-docker-monitor');
+      const homeDir = options.homeDir || process.env.HOME || process.env.USERPROFILE || '.';
+      const appDir = path.join(homeDir, '.dockmon');
+      const legacyDir = path.join(homeDir, '.vps-docker-monitor');
+
       if (!fs.existsSync(appDir)) {
         try {
           fs.mkdirSync(appDir, { recursive: true });
@@ -25,7 +28,18 @@ export class ProfileStore {
           // Fallback to local file
         }
       }
+
       this.filePath = path.join(appDir, 'profiles.json');
+
+      // Seamless migration: If legacy profiles exist and new file does not, copy it over
+      const legacyFile = path.join(legacyDir, 'profiles.json');
+      if (fs.existsSync(legacyFile) && !fs.existsSync(this.filePath)) {
+        try {
+          fs.copyFileSync(legacyFile, this.filePath);
+        } catch {
+          // Ignore copy failure
+        }
+      }
     }
 
     this.load();

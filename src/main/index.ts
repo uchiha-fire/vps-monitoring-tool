@@ -20,7 +20,7 @@ async function createWindow() {
     height: 800,
     minWidth: 1024,
     minHeight: 640,
-    title: 'VPS Docker Monitor',
+    title: 'DockMon',
     backgroundColor: '#0d1117',
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.cjs'),

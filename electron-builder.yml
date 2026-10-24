@@ -1,5 +1,6 @@
-appId: tech.zephyrus.vpsmonitoring
-productName: VPS Docker Monitor
+appId: tech.zephyrus.dockmon
+productName: DockMon
+executableName: dockmon
 copyright: Copyright © 2026 Zephyrus Labs (https://zephyrus-labs.tech/)
 npmRebuild: false
 
@@ -15,9 +16,10 @@ files:
 # Linux Distribution (100% Free - Ubuntu, Debian, Fedora, Arch, etc.)
 linux:
   category: Development
-  synopsis: Remote Docker & Docker Compose Monitoring over SSH
+  synopsis: Agentless Remote Docker & Docker Compose Monitoring over SSH
   description: Desktop application by Zephyrus Labs to inspect and manage Docker and Docker Compose services over VPS SSH.
   icon: build/icon.png
+  artifactName: "${name}-${version}.${ext}"
   target:
     - target: AppImage
       arch:
@@ -45,12 +47,17 @@ nsis:
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: always
   createStartMenuShortcut: true
-  shortcutName: VPS Docker Monitor
+  shortcutName: DockMon
+  artifactName: "DockMon-Setup-${version}.${ext}"
+
+portable:
+  artifactName: "DockMon-${version}-portable.${ext}"
 
 # macOS Configuration (Apple Silicon arm64 & Intel x64)
 mac:
   category: public.app-category.developer-tools
   icon: build/icon.png
+  artifactName: "DockMon-${version}-${arch}.${ext}"
   target:
     - target: dmg
       arch:

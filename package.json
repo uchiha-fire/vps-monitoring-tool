@@ -1,7 +1,7 @@
 {
-  "name": "vps-docker-monitor",
+  "name": "dockmon",
   "version": "1.0.0",
-  "description": "Desktop application to monitor and control Docker & Docker Compose services over VPS SSH",
+  "description": "Agentless desktop application to monitor and control Docker & Compose services over VPS SSH",
   "type": "module",
   "main": "dist-electron/main/index.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "package:all": "npm run build && electron-builder -l -w"
   },
   "keywords": [
+    "dockmon",
     "docker",
     "docker-compose",
     "vps",
@@ -28,7 +29,7 @@
   "maintainers": [
     "Shubham Sharma <sharmashubham25962@gmail.com>"
   ],
-  "homepage": "https://zephyrus-labs.tech/",
+  "homepage": "https://dockmon.zephyrus-labs.tech/",
   "repository": {
     "type": "git",
     "url": "https://github.com/uchiha-fire/vps-monitoring-tool"

@@ -29,12 +29,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="font-bold text-base tracking-tight text-white">VPS Docker Monitor</h1>
+            <h1 className="font-bold text-base tracking-tight text-white">DockMon</h1>
             <span className="text-[10px] uppercase font-semibold px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
               v1.0
             </span>
           </div>
-          <p className="text-xs text-slate-400">Remote Docker & Compose Control</p>
+          <p className="text-xs text-slate-400">Agentless Docker & Compose Control</p>
         </div>
       </div>
 

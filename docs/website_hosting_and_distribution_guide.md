@@ -1,6 +1,6 @@
-# Comprehensive Guide: Hosting a Distribution Website for VPS Docker Monitor on a VPS
+# Comprehensive Guide: Hosting a Distribution Website for DockMon on a VPS
 
-> **Target Audience**: Developers, DevOps Engineers, and AI Agents/LLMs taking on the task of building, deploying, and maintaining the official product landing page and binary distribution website for **VPS Docker Monitor**.
+> **Target Audience**: Developers, DevOps Engineers, and AI Agents/LLMs taking on the task of building, deploying, and maintaining the official product landing page and binary distribution website for **DockMon**.
 > **Author & Brand**: [Zephyrus Labs](https://zephyrus-labs.tech/) &bull; Lead Developer: [Shubham Sharma](https://github.com/uchiha-fire)
 > **License**: MIT License
 
@@ -9,10 +9,10 @@
 ## 1. Executive Summary & Objective
 
 ### 1.1 The Goal
-Create and host a modern, high-converting product landing page on a self-hosted Linux VPS under a custom domain (e.g. `https://vps-monitor.zephyrus-labs.tech` or `https://mydomain.com`). 
+Create and host a modern, high-converting product landing page on a self-hosted Linux VPS under the custom domain **`https://dockmon.zephyrus-labs.tech`**.
 
 The website must:
-1. Showcase the features, screenshots, and capabilities of **VPS Docker Monitor**.
+1. Showcase the features, screenshots, and capabilities of **DockMon**.
 2. Automatically detect the visitor's operating system (Windows vs. Linux distros) and present a prominent, primary **"Download for [OS]"** button.
 3. Provide a clean dropdown or table of alternative downloads for all supported package formats (`.AppImage`, `.deb`, `.rpm`, `.exe` installer, `.exe` portable).
 4. Serve the binaries directly from the VPS (or seamlessly stream/redirect from GitHub Releases).
@@ -26,12 +26,12 @@ The application is an Electron desktop app built using Vite, React, TypeScript, 
 
 | Target OS | Package Type | Filename Pattern | Typical Size | MIME Type | Recommended Download Command / Direct URL |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Linux (Universal)** | AppImage | `VPS-Docker-Monitor-1.0.0.AppImage` | ~108 MB | `application/x-executable` | `chmod +x <file> && ./<file>` |
-| **Linux (Debian/Ubuntu)** | DEB Package | `vps-docker-monitor_1.0.0_amd64.deb` | ~84 MB | `application/vnd.debian.binary-package` | `sudo apt install ./<file>` |
-| **Linux (Fedora/RHEL)** | RPM Package | `vps-docker-monitor-1.0.0.x86_64.rpm`| ~85 MB | `application/x-rpm` | `sudo dnf install ./<file>` |
-| **Windows 10/11** | NSIS Installer | `VPS-Docker-Monitor-Setup-1.0.0.exe` | ~85 MB | `application/vnd.microsoft.portable-executable` | Double click to install |
-| **Windows 10/11** | Portable Standalone | `VPS-Docker-Monitor-1.0.0-portable.exe` | ~80 MB | `application/vnd.microsoft.portable-executable` | Run directly without install |
-| **macOS (Optional)** | DMG / Zip | `VPS-Docker-Monitor-1.0.0.dmg` | ~90 MB | `application/x-apple-diskimage` | Open DMG & drag to Applications |
+| **Linux (Universal)** | AppImage | `dockmon-1.0.0.AppImage` | ~108 MB | `application/x-executable` | `chmod +x <file> && ./<file>` |
+| **Linux (Debian/Ubuntu)** | DEB Package | `dockmon_1.0.0_amd64.deb` | ~84 MB | `application/vnd.debian.binary-package` | `sudo apt install ./<file>` |
+| **Linux (Fedora/RHEL)** | RPM Package | `dockmon-1.0.0.x86_64.rpm`| ~85 MB | `application/x-rpm` | `sudo dnf install ./<file>` |
+| **Windows 10/11** | NSIS Installer | `DockMon-Setup-1.0.0.exe` | ~85 MB | `application/vnd.microsoft.portable-executable` | Double click to install |
+| **Windows 10/11** | Portable Standalone | `DockMon-1.0.0-portable.exe` | ~80 MB | `application/vnd.microsoft.portable-executable` | Run directly without install |
+| **macOS (Optional)** | DMG / Zip | `DockMon-1.0.0.dmg` | ~90 MB | `application/x-apple-diskimage` | Open DMG & drag to Applications |
 
 ---
 
@@ -89,20 +89,20 @@ const DOWNLOAD_LINKS = {
   windows: {
     label: 'Download for Windows',
     sublabel: 'Installer (.exe) &bull; 64-bit',
-    filename: `VPS-Docker-Monitor-Setup-${VERSION}.exe`,
-    url: `${RELEASE_BASE_URL}/VPS-Docker-Monitor-Setup-${VERSION}.exe`
+    filename: `DockMon-Setup-${VERSION}.exe`,
+    url: `${RELEASE_BASE_URL}/DockMon-Setup-${VERSION}.exe`
   },
   linux: {
     label: 'Download for Linux',
     sublabel: 'Universal AppImage &bull; x86_64',
-    filename: `VPS-Docker-Monitor-${VERSION}.AppImage`,
-    url: `${RELEASE_BASE_URL}/VPS-Docker-Monitor-${VERSION}.AppImage`
+    filename: `dockmon-${VERSION}.AppImage`,
+    url: `${RELEASE_BASE_URL}/dockmon-${VERSION}.AppImage`
   },
   mac: {
     label: 'Download for macOS',
     sublabel: 'Universal (.dmg)',
-    filename: `VPS-Docker-Monitor-${VERSION}.dmg`,
-    url: `${RELEASE_BASE_URL}/VPS-Docker-Monitor-${VERSION}.dmg`
+    filename: `DockMon-${VERSION}.dmg`,
+    url: `${RELEASE_BASE_URL}/DockMon-${VERSION}.dmg`
   }
 };
 
@@ -300,7 +300,7 @@ Here is a modern, responsive, high-converting landing page using Tailwind CSS (v
               <td class="px-6 py-4 font-mono text-xs text-indigo-400">.AppImage</td>
               <td class="px-6 py-4 text-xs text-slate-400">chmod +x & execute. Runs on any Linux distro.</td>
               <td class="px-6 py-4 text-right">
-                <a href="/downloads/VPS-Docker-Monitor-1.0.0.AppImage" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
+                <a href="/downloads/dockmon-1.0.0.AppImage" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
                   Download
                 </a>
               </td>
@@ -312,9 +312,9 @@ Here is a modern, responsive, high-converting landing page using Tailwind CSS (v
                 <span>🍥 Debian / Ubuntu</span>
               </td>
               <td class="px-6 py-4 font-mono text-xs text-indigo-400">.deb (amd64)</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">sudo apt install ./file.deb</td>
+              <td class="px-6 py-4 text-xs font-mono text-slate-400">sudo apt install ./dockmon_1.0.0_amd64.deb</td>
               <td class="px-6 py-4 text-right">
-                <a href="/downloads/vps-docker-monitor_1.0.0_amd64.deb" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
+                <a href="/downloads/dockmon_1.0.0_amd64.deb" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
                   Download
                 </a>
               </td>
@@ -326,9 +326,9 @@ Here is a modern, responsive, high-converting landing page using Tailwind CSS (v
                 <span>🎩 Fedora / RHEL</span>
               </td>
               <td class="px-6 py-4 font-mono text-xs text-indigo-400">.rpm (x86_64)</td>
-              <td class="px-6 py-4 text-xs font-mono text-slate-400">sudo dnf install ./file.rpm</td>
+              <td class="px-6 py-4 text-xs font-mono text-slate-400">sudo dnf install ./dockmon-1.0.0.x86_64.rpm</td>
               <td class="px-6 py-4 text-right">
-                <a href="/downloads/vps-docker-monitor-1.0.0.x86_64.rpm" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
+                <a href="/downloads/dockmon-1.0.0.x86_64.rpm" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
                   Download
                 </a>
               </td>
@@ -342,7 +342,7 @@ Here is a modern, responsive, high-converting landing page using Tailwind CSS (v
               <td class="px-6 py-4 font-mono text-xs text-indigo-400">Setup (.exe)</td>
               <td class="px-6 py-4 text-xs text-slate-400">Standard desktop installer with desktop shortcut.</td>
               <td class="px-6 py-4 text-right">
-                <a href="/downloads/VPS-Docker-Monitor-Setup-1.0.0.exe" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
+                <a href="/downloads/DockMon-Setup-1.0.0.exe" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
                   Download
                 </a>
               </td>
@@ -356,7 +356,7 @@ Here is a modern, responsive, high-converting landing page using Tailwind CSS (v
               <td class="px-6 py-4 font-mono text-xs text-indigo-400">Standalone (.exe)</td>
               <td class="px-6 py-4 text-xs text-slate-400">Zero installation required. Portable binary.</td>
               <td class="px-6 py-4 text-right">
-                <a href="/downloads/VPS-Docker-Monitor-1.0.0-portable.exe" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
+                <a href="/downloads/DockMon-1.0.0-portable.exe" download class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium transition">
                   Download
                 </a>
               </td>

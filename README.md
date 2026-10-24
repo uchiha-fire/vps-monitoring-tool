@@ -1,13 +1,20 @@
-# VPS Docker Monitor
+# DockMon
 
+<p align="center">
+  <img src="docs/logo.png" alt="DockMon Logo" width="380" />
+</p>
+
+[![Official Site](https://img.shields.io/badge/site-dockmon.zephyrus--labs.tech-indigo.svg)](https://dockmon.zephyrus-labs.tech/)
 [![Release](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/uchiha-fire/vps-monitoring-tool/releases)
-[![Tests](https://img.shields.io/badge/tests-51%20passing-emerald.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
+[![Tests](https://img.shields.io/badge/tests-53%20passing-emerald.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![GitHub stars](https://img.shields.io/github/stars/uchiha-fire/vps-monitoring-tool?style=social)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Zephyrus Labs](https://img.shields.io/badge/Developed%20by-Zephyrus%20Labs-6366f1.svg)](https://zephyrus-labs.tech/)
 
-A lightweight, high-performance desktop application by **[Zephyrus Labs](https://zephyrus-labs.tech/)** to monitor, inspect, and manage **Docker** and **Docker Compose** services across remote Linux VPS instances over SSH.
+**DockMon** is a lightweight, agentless desktop application by **[Zephyrus Labs](https://zephyrus-labs.tech/)** to monitor, inspect, and manage **Docker** containers and **Docker Compose** stacks across remote Linux VPS instances over pure SSH.
+
+🌐 **Product Website & Downloads**: [https://dockmon.zephyrus-labs.tech/](https://dockmon.zephyrus-labs.tech/)
 
 Stream real-time ANSI-colored logs, manage service lifecycles, and organize compose stacks without exposing the Docker daemon socket over public TCP ports.
 
@@ -20,9 +27,9 @@ Stream real-time ANSI-colored logs, manage service lifecycles, and organize comp
 - **🖥️ High-Speed ANSI Terminal Streaming**: Powered by **`xterm.js`**, stream live container logs (`docker logs -f --tail N`) with full ANSI 256/TrueColor support, pause/unpause scroll lock, and instant regex search.
 - **⚡ Container Lifecycle Controls**: Start, Stop, and Restart individual containers or entire Docker Compose project stacks with built-in safety confirmation dialogs.
 - **🏷️ Health & Port Telemetry**: Real-time status indicators (Running 🟢, Exited 🔴, Restarting 🟡, Paused ⏸️) with Docker health check detection (`healthy`, `unhealthy`, `starting`) and host-to-container port mapping chips.
-- **🔖 Connection Bookmarks**: Save frequently accessed VPS servers as encrypted bookmarks for instant one-click switching.
+- **🔖 Connection Bookmarks**: Save frequently accessed VPS servers as encrypted bookmarks in `~/.dockmon/` for instant one-click switching.
 - **🛡️ 100% Agentless & Secure**: Zero agent software required on the VPS. Communicates directly over encrypted SSH channels via pure JavaScript `ssh2`.
-- **🧪 Rigorous TDD Architecture**: Backed by 51 unit and integration test suites running offline against an in-memory mock SSH server.
+- **🧪 Rigorous TDD Architecture**: Backed by 53 unit and integration test suites running offline against an in-memory mock SSH server.
 
 ---
 
@@ -30,7 +37,7 @@ Stream real-time ANSI-colored logs, manage service lifecycles, and organize comp
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│               VPS Docker Monitor (Desktop)             │
+│                    DockMon (Desktop)                   │
 │                                                        │
 │  ┌──────────────────────┐    IPC    ┌────────────────┐ │
 │  │   Renderer Process   │ ◄───────► │  Main Process  │ │
@@ -53,26 +60,30 @@ Stream real-time ANSI-colored logs, manage service lifecycles, and organize comp
 
 ## 📥 Download & Multi-Platform Installation
 
-VPS Docker Monitor is available across Linux, macOS, and Windows.
+DockMon is available across Linux, Windows, and macOS.
 
 ### 🐧 Linux (100% Free, Native Support)
 Works on all major distributions with zero external dependencies:
-- **Universal AppImage**: Download `VPS-Docker-Monitor-x86_64.AppImage`, run `chmod +x`, and double-click to launch on Ubuntu, Fedora, Debian, Arch, openSUSE, etc.
+- **Universal AppImage**: Download `dockmon-1.0.0.AppImage`, run `chmod +x`, and double-click to launch on Ubuntu, Fedora, Debian, Arch, openSUSE, etc.
+  ```bash
+  chmod +x dockmon-1.0.0.AppImage
+  ./dockmon-1.0.0.AppImage
+  ```
 - **Debian / Ubuntu (`.deb`)**:
   ```bash
-  sudo dpkg -i vps-monitoring-tool_1.0.0_amd64.deb
+  sudo apt install ./dockmon_1.0.0_amd64.deb
   ```
 - **Fedora / RHEL (`.rpm`)**:
   ```bash
-  sudo dnf install ./vps-monitoring-tool-1.0.0.x86_64.rpm
+  sudo dnf install ./dockmon-1.0.0.x86_64.rpm
   ```
 
 ### 🪟 Windows (100% Free)
-- **Installer (`.exe`)**: Download and run the NSIS setup executable.
-- **Portable (`.exe`)**: Standalone binary with zero setup required.
+- **Installer (`.exe`)**: Download and run `DockMon-Setup-1.0.0.exe`.
+- **Portable (`.exe`)**: Standalone binary `DockMon-1.0.0-portable.exe` with zero setup required.
 - **Windows Package Manager (`winget`)**:
   ```powershell
-  winget install vps-monitoring-tool
+  winget install dockmon
   ```
 
 ### 🍎 macOS

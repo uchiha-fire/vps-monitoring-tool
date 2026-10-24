@@ -94,4 +94,57 @@ describe('ProfileStore (TDD)', () => {
     expect(remaining).toHaveLength(1);
     expect(remaining[0].id).toBe(p2.id);
   });
+
+  it('should default to .dockmon directory under user home', () => {
+    const customHome = fs.mkdtempSync(path.join(os.tmpdir(), 'dockmon-home-test-'));
+    const defaultStore = new ProfileStore({ homeDir: customHome });
+
+    defaultStore.saveProfile({
+      label: 'Home Server',
+      host: '192.168.1.100',
+      port: 22,
+      username: 'admin',
+    });
+
+    const expectedFile = path.join(customHome, '.dockmon', 'profiles.json');
+    expect(fs.existsSync(expectedFile)).toBe(true);
+
+    const content = JSON.parse(fs.readFileSync(expectedFile, 'utf8'));
+    expect(content).toHaveLength(1);
+    expect(content[0].label).toBe('Home Server');
+
+    fs.rmSync(customHome, { recursive: true, force: true });
+  });
+
+  it('should migrate legacy .vps-docker-monitor profiles to .dockmon on initialization', () => {
+    const customHome = fs.mkdtempSync(path.join(os.tmpdir(), 'dockmon-migrate-test-'));
+    const legacyDir = path.join(customHome, '.vps-docker-monitor');
+    fs.mkdirSync(legacyDir, { recursive: true });
+
+    const legacyProfiles = [
+      {
+        id: 'legacy-1',
+        label: 'Old VPS Server',
+        host: 'old.vps.com',
+        port: 22,
+        username: 'root',
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
+    ];
+    fs.writeFileSync(path.join(legacyDir, 'profiles.json'), JSON.stringify(legacyProfiles), 'utf8');
+
+    // Initialize new store without explicit filePath, using customHome
+    const migratedStore = new ProfileStore({ homeDir: customHome });
+    const loadedProfiles = migratedStore.listProfiles();
+
+    expect(loadedProfiles).toHaveLength(1);
+    expect(loadedProfiles[0].id).toBe('legacy-1');
+    expect(loadedProfiles[0].label).toBe('Old VPS Server');
+
+    // Verify .dockmon/profiles.json was created with the migrated data
+    const newFile = path.join(customHome, '.dockmon', 'profiles.json');
+    expect(fs.existsSync(newFile)).toBe(true);
+
+    fs.rmSync(customHome, { recursive: true, force: true });
+  });
 });
