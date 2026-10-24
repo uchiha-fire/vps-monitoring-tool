@@ -10,6 +10,7 @@
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![GitHub stars](https://img.shields.io/github/stars/uchiha-fire/vps-monitoring-tool?style=social)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Shubham%20Sharma-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/shubham-sharma-28487819b/)
 [![Zephyrus Labs](https://img.shields.io/badge/Developed%20by-Zephyrus%20Labs-6366f1.svg)](https://zephyrus-labs.tech/)
 
 **DockMon** is a lightweight, agentless desktop application by **[Zephyrus Labs](https://zephyrus-labs.tech/)** to monitor, inspect, and manage **Docker** containers and **Docker Compose** stacks across remote Linux VPS instances over pure SSH.
@@ -170,9 +171,11 @@ npm run build
 
 Built and maintained with ❤️ by **[Zephyrus Labs](https://zephyrus-labs.tech/)**.
 
-- 🌐 **Website**: [zephyrus-labs.tech](https://zephyrus-labs.tech/)
+- 👨‍💻 **Lead Developer**: **Shubham Sharma**
+- 🔗 **LinkedIn**: [shubham-sharma-28487819b](https://www.linkedin.com/in/shubham-sharma-28487819b/)
 - 💻 **GitHub**: [@uchiha-fire](https://github.com/uchiha-fire)
-- ✉️ **Contact**: [zephyrus.labs@gmail.com](mailto:zephyrus.labs@gmail.com)
+- 🌐 **Website**: [zephyrus-labs.tech](https://zephyrus-labs.tech/) &bull; [dockmon.zephyrus-labs.tech](https://dockmon.zephyrus-labs.tech/)
+- ✉️ **Contact**: [sharmashubham25962@gmail.com](mailto:sharmashubham25962@gmail.com) &bull; [zephyrus.labs@gmail.com](mailto:zephyrus.labs@gmail.com)
 
 If you find this application helpful in managing your remote infrastructure, please consider giving it a ⭐️ on [GitHub](https://github.com/uchiha-fire/vps-monitoring-tool)!
 
