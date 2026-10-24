@@ -9,7 +9,11 @@
     "build": "tsc && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "package:dir": "npm run build && electron-builder --dir",
+    "package:linux": "npm run build && electron-builder --linux AppImage deb",
+    "package:win": "npm run build && electron-builder --win nsis portable",
+    "package:all": "npm run build && electron-builder -l -w"
   },
   "keywords": [
     "docker",
@@ -55,6 +59,7 @@
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
     "electron": "^33.0.1",
+    "electron-builder": "^26.18.0",
     "jsdom": "^25.0.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",

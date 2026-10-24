@@ -1,0 +1,58 @@
+appId: tech.zephyrus.vpsmonitoring
+productName: VPS Docker Monitor
+copyright: Copyright © 2026 Zephyrus Labs (https://zephyrus-labs.tech/)
+npmRebuild: false
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - package.json
+
+# Linux Distribution (100% Free - Ubuntu, Debian, Fedora, Arch, etc.)
+linux:
+  category: Development
+  synopsis: Remote Docker & Docker Compose Monitoring over SSH
+  description: Desktop application by Zephyrus Labs to inspect and manage Docker and Docker Compose services over VPS SSH.
+  icon: build/icon.png
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+    - target: rpm
+      arch:
+        - x64
+
+# Windows Distribution (100% Free - NSIS Installer & Portable)
+win:
+  icon: build/icon.png
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: VPS Docker Monitor
+
+# macOS Configuration (Apple Silicon arm64 & Intel x64)
+mac:
+  category: public.app-category.developer-tools
+  icon: build/icon.png
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
