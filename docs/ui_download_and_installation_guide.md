@@ -35,7 +35,8 @@ The UI must make the **2-step lifecycle** visually obvious:
 | **Fedora / RHEL / CentOS** | `.rpm` | `cd ~/Downloads && sudo dnf install ./dockmon-1.0.0.rpm` | `curl -LO https://dockmon.zephyrus-labs.tech/downloads/dockmon-1.0.0.rpm && sudo dnf install ./dockmon-1.0.0.rpm` | Double-click `.rpm` file to install via GNOME Software. |
 | **Windows 10 / 11** | Setup (`.exe`) | Double-click `DockMon-Setup-1.0.0.exe` in your Downloads folder. | `winget install dockmon` *(Future release)* | If Windows SmartScreen appears: click **"More info"** $\rightarrow$ **"Run anyway"**. |
 | **Windows 10 / 11** | Portable (`.exe`) | Move `DockMon-1.0.0-portable.exe` to any folder and double-click to launch. | N/A | Zero installation required. |
-| **macOS (Intel / Apple Silicon)** | `.dmg` | Open `DockMon-1.0.0.dmg` and drag **DockMon** to **Applications**. | `brew install --cask dockmon` *(Future release)* | Standard macOS drag-and-drop installer. |
+| **macOS Apple Silicon (M1/M2/M3/M4)** | `.dmg` / `.zip` | Open `DockMon-1.0.0-arm64.dmg` & drag to Applications. First launch: Right-click $\rightarrow$ Open. | `xattr -cr /Applications/DockMon.app` | See full spec in [`ui_macos_support_and_website_updates.md`](file:///home/shubham/startups/vps_monitoring/docs/ui_macos_support_and_website_updates.md). |
+| **macOS Intel (64-bit)** | `.dmg` / `.zip` | Open `DockMon-1.0.0-x64.dmg` & drag to Applications. First launch: Right-click $\rightarrow$ Open. | `xattr -cr /Applications/DockMon.app` | See full spec in [`ui_macos_support_and_website_updates.md`](file:///home/shubham/startups/vps_monitoring/docs/ui_macos_support_and_website_updates.md). |
 
 ---
 
