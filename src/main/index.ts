@@ -5,6 +5,7 @@ import { SshConnectionManager } from './ssh/SshConnectionManager';
 import { DockerServiceManager } from './docker/DockerServiceManager';
 import { ProfileStore } from './storage/ProfileStore';
 import { registerIpcHandlers } from './ipc/registerIpcHandlers';
+import { setupApplicationMenu } from './menu/AppMenuBuilder';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,7 +47,10 @@ async function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  setupApplicationMenu();
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
