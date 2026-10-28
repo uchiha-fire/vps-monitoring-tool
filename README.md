@@ -6,7 +6,7 @@
 
 [![Official Site](https://img.shields.io/badge/site-dockmon.zephyrus--labs.tech-indigo.svg)](https://dockmon.zephyrus-labs.tech/)
 [![Release](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/uchiha-fire/vps-monitoring-tool/releases)
-[![Tests](https://img.shields.io/badge/tests-53%20passing-emerald.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
+[![Tests](https://img.shields.io/badge/tests-57%20passing-emerald.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![GitHub stars](https://img.shields.io/github/stars/uchiha-fire/vps-monitoring-tool?style=social)](https://github.com/uchiha-fire/vps-monitoring-tool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -30,7 +30,7 @@ Stream real-time ANSI-colored logs, manage service lifecycles, and organize comp
 - **🏷️ Health & Port Telemetry**: Real-time status indicators (Running 🟢, Exited 🔴, Restarting 🟡, Paused ⏸️) with Docker health check detection (`healthy`, `unhealthy`, `starting`) and host-to-container port mapping chips.
 - **🔖 Connection Bookmarks**: Save frequently accessed VPS servers as encrypted bookmarks in `~/.dockmon/` for instant one-click switching.
 - **🛡️ 100% Agentless & Secure**: Zero agent software required on the VPS. Communicates directly over encrypted SSH channels via pure JavaScript `ssh2`.
-- **🧪 Rigorous TDD Architecture**: Backed by 53 unit and integration test suites running offline against an in-memory mock SSH server.
+- **🧪 Rigorous TDD Architecture**: Backed by 57 unit and integration test suites running offline against an in-memory mock SSH server.
 
 ---
 
@@ -89,10 +89,29 @@ Works on all major distributions with zero external dependencies:
   winget install dockmon
   ```
 
-### 🍎 macOS
-- **Apple Silicon (`arm64`)**: Native build optimized for M1, M2, M3, and M4 chips.
-- **Intel (`x64`)**: Standard 64-bit build for Intel Macs.
-- **Universal (`.dmg`)**: Single package that executes on both architectures.
+### 🍎 macOS (Apple Silicon & Intel)
+
+Distinct, highly optimized native builds for macOS 11+ (Big Sur through macOS 15 Sequoia):
+
+| Architecture | Package Type | Download Link | Description |
+| :--- | :--- | :--- | :--- |
+| **Apple Silicon** (`arm64`) | **DMG Installer** | [`DockMon-1.0.0-arm64.dmg`](https://github.com/uchiha-fire/vps-monitoring-tool/releases/download/v1.0.0/DockMon-1.0.0-arm64.dmg) | Drag-and-drop installer for Apple M1, M2, M3, and M4 Macs |
+| **Apple Silicon** (`arm64`) | **Portable ZIP** | [`DockMon-1.0.0-arm64.zip`](https://github.com/uchiha-fire/vps-monitoring-tool/releases/download/v1.0.0/DockMon-1.0.0-arm64.zip) | Standalone app bundle for Apple Silicon |
+| **Intel** (`x64`) | **DMG Installer** | [`DockMon-1.0.0-x64.dmg`](https://github.com/uchiha-fire/vps-monitoring-tool/releases/download/v1.0.0/DockMon-1.0.0-x64.dmg) | Drag-and-drop installer for 64-bit Intel Macs |
+| **Intel** (`x64`) | **Portable ZIP** | [`DockMon-1.0.0-x64.zip`](https://github.com/uchiha-fire/vps-monitoring-tool/releases/download/v1.0.0/DockMon-1.0.0-x64.zip) | Standalone app bundle for Intel Macs |
+
+#### 🔓 First-Time Launch on macOS (Gatekeeper Bypass)
+
+Because DockMon is a 100% free community open-source project distributed without a paid ($99/year) Apple Developer ID certificate, macOS Gatekeeper may show an *"unverified developer"* alert on first launch.
+
+To open DockMon the first time:
+
+- **Method 1 (Quickest - Finder)**: Right-click (or Control-click) **`DockMon.app`** in your `/Applications` folder $\rightarrow$ select **Open** $\rightarrow$ click **Open** in the confirmation dialog. *(You only need to do this once)*.
+- **Method 2 (Terminal)**: Remove the Apple quarantine attribute:
+  ```bash
+  xattr -cr /Applications/DockMon.app
+  ```
+- **Method 3 (System Settings)**: Open **System Settings** $\rightarrow$ **Privacy & Security** $\rightarrow$ scroll down to **Security** $\rightarrow$ click **Open Anyway** next to DockMon.
 
 ---
 
@@ -134,7 +153,7 @@ This project strictly adheres to **Test-Driven Development (TDD)** using **Vites
 
 ### Running Test Suites
 ```bash
-# Run all 51 unit & integration test suites
+# Run all 57 unit & integration test suites
 npm test
 
 # Run tests in continuous watch mode
