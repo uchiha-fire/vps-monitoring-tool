@@ -21,6 +21,8 @@ jobs:
             target: --linux AppImage deb rpm
           - os: windows-latest
             target: --win nsis portable
+          - os: macos-latest
+            target: --mac dmg zip --arm64 --x64
 
     steps:
       - name: Checkout Source Code
@@ -51,6 +53,7 @@ jobs:
         run: npx electron-builder ${{ matrix.target }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Upload Release Artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
@@ -61,6 +64,8 @@ jobs:
             release/*.deb
             release/*.rpm
             release/*.exe
+            release/*.dmg
+            release/*.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
