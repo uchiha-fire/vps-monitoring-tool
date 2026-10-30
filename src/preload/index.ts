@@ -10,6 +10,8 @@ export const electronAPI = {
     ipcRenderer.invoke('ssh:disconnect'),
   getSshState: (): Promise<SshConnectionState> =>
     ipcRenderer.invoke('ssh:get-state'),
+  checkPrivateKey: (keyPathOrContent: string): Promise<{ isRaw: boolean; exists: boolean; resolvedPath?: string }> =>
+    ipcRenderer.invoke('ssh:check-key', keyPathOrContent),
   onSshStateChanged: (callback: (state: SshConnectionState) => void) => {
     const handler = (_event: any, state: SshConnectionState) => callback(state);
     ipcRenderer.on('ssh:state-changed', handler);

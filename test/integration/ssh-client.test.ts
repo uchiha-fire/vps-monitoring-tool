@@ -52,6 +52,22 @@ describe('SshConnectionManager (TDD Integration)', () => {
     expect(manager.getState().status).toBe('error');
   });
 
+  it('should reject with PrivateKeyNotFoundError when privateKey file does not exist on disk', async () => {
+    const manager = new SshConnectionManager();
+    await expect(
+      manager.connect({
+        host: '127.0.0.1',
+        port,
+        username: 'testuser',
+        privateKey: '~/.ssh/non_existent_key_sample_xyz',
+      })
+    ).rejects.toThrow('Private key file not found');
+
+    const state = manager.getState();
+    expect(state.status).toBe('error');
+    expect(state.error).toContain('Private key file not found');
+  });
+
   it('should execute remote command and capture output', async () => {
     const manager = new SshConnectionManager();
     await manager.connect({

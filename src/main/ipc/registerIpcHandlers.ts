@@ -4,6 +4,7 @@ import { DockerServiceManager } from '../docker/DockerServiceManager';
 import { ProfileStore } from '../storage/ProfileStore';
 import { SshCredentials, SshProfile } from '../../common/types/ssh';
 import { ContainerAction } from '../../common/types/docker';
+import { checkPrivateKeyStatus } from '../ssh/SshPathResolver';
 
 export function registerIpcHandlers(
   mainWindow: BrowserWindow,
@@ -39,6 +40,10 @@ export function registerIpcHandlers(
 
   ipcMain.handle('ssh:get-state', async () => {
     return sshManager.getState();
+  });
+
+  ipcMain.handle('ssh:check-key', async (_event, keyPathOrContent: string) => {
+    return checkPrivateKeyStatus(keyPathOrContent);
   });
 
   // Docker Channels

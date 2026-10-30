@@ -1,7 +1,7 @@
 import { Client, ClientChannel, ConnectConfig } from 'ssh2';
 import { EventEmitter } from 'events';
-import fs from 'fs';
 import { SshCredentials, SshConnectionState } from '../../common/types/ssh';
+import { loadPrivateKey } from './SshPathResolver';
 
 export interface CommandExecutionResult {
   stdout: string;
@@ -59,11 +59,15 @@ export class SshConnectionManager extends EventEmitter {
       }
 
       if (credentials.privateKey) {
-        // Read file if it's a file path, or pass directly if PEM string
-        if (fs.existsSync(credentials.privateKey)) {
-          config.privateKey = fs.readFileSync(credentials.privateKey);
-        } else {
-          config.privateKey = credentials.privateKey;
+        try {
+          const loaded = loadPrivateKey(credentials.privateKey);
+          config.privateKey = loaded.content;
+        } catch (err) {
+          this.setState({
+            status: 'error',
+            error: (err as Error).message,
+          });
+          return reject(err);
         }
 
         if (credentials.passphrase) {
