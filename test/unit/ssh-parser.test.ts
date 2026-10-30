@@ -83,6 +83,93 @@ describe('SshConfigParser (TDD)', () => {
       expect(() => parseSshCommand('ssh -p 70000 user@host')).toThrow('Port must be between 1 and 65535');
       expect(() => parseSshCommand('ssh -p 0 user@host')).toThrow('Port must be between 1 and 65535');
     });
+
+    it('should parse multi-line command with line continuations (backslash) and multiple -L flags', () => {
+      const multilineCmd = `ssh -i ~/.ssh/id_ed25519_larry_ai_ss -p 448 \\
+    -L 4000:localhost:4000 \\
+    -L 9099:localhost:9099 \\
+    -L 4445:localhost:4445 \\
+    -L 8085:localhost:8085 \\
+    -L 5058:localhost:5058 \\
+    -L 5056:localhost:5056 \\
+    -L 5059:localhost:5059 \\
+    -L 6060:localhost:6060 \\
+    -L 5055:localhost:5055 \\
+    -L 5063:localhost:5063 \\
+    -L 6061:localhost:6061 \\
+    ai@vibecloser.com`;
+
+      const result = parseSshCommand(multilineCmd);
+      expect(result).toEqual({
+        host: 'vibecloser.com',
+        username: 'ai',
+        port: 448,
+        privateKey: '~/.ssh/id_ed25519_larry_ai_ss',
+      });
+    });
+
+    it('should parse destination placed BEFORE flags without being overridden', () => {
+      const cmd = 'ssh ai@vibecloser.com -i ~/.ssh/id_ed25519 -p 448 -L 4000:localhost:4000';
+      const result = parseSshCommand(cmd);
+      expect(result).toEqual({
+        host: 'vibecloser.com',
+        username: 'ai',
+        port: 448,
+        privateKey: '~/.ssh/id_ed25519',
+      });
+    });
+
+    it('should parse destination placed IN THE MIDDLE of flags', () => {
+      const cmd = 'ssh -p 448 ai@vibecloser.com -L 4000:localhost:4000 -L 9099:localhost:9099';
+      const result = parseSshCommand(cmd);
+      expect(result).toEqual({
+        host: 'vibecloser.com',
+        username: 'ai',
+        port: 448,
+      });
+    });
+
+    it('should parse username specified via -l flag separate from host', () => {
+      const cmd = 'ssh -l deploy_user -p 2200 -i ~/.ssh/key server1.mycloud.com';
+      const result = parseSshCommand(cmd);
+      expect(result).toEqual({
+        host: 'server1.mycloud.com',
+        username: 'deploy_user',
+        port: 2200,
+        privateKey: '~/.ssh/key',
+      });
+    });
+
+    it('should parse attached flag syntax like -p448 and -ladmin', () => {
+      const cmd = 'ssh -p448 -ladmin -i~/.ssh/vps_key myhost.com';
+      const result = parseSshCommand(cmd);
+      expect(result).toEqual({
+        host: 'myhost.com',
+        username: 'admin',
+        port: 448,
+        privateKey: '~/.ssh/vps_key',
+      });
+    });
+
+    it('should ignore all complex OpenSSH arguments like -R, -D, -F, -c, -b, -J', () => {
+      const cmd = 'ssh -J jump.host:22 -F /tmp/config -D 1080 -R 8080:localhost:80 -c aes256-gcm@openssh.com -p 22 root@prod.internal';
+      const result = parseSshCommand(cmd);
+      expect(result).toEqual({
+        host: 'prod.internal',
+        username: 'root',
+        port: 22,
+      });
+    });
+
+    it('should ignore multiple -o options cleanly', () => {
+      const cmd = 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -p 2222 root@10.0.0.1';
+      const result = parseSshCommand(cmd);
+      expect(result).toEqual({
+        host: '10.0.0.1',
+        username: 'root',
+        port: 2222,
+      });
+    });
   });
 
   describe('toSshCommand', () => {
