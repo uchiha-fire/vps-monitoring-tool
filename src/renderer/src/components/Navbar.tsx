@@ -1,10 +1,11 @@
 import React from 'react';
-import { Server, Power, RefreshCw, Terminal, ShieldCheck } from 'lucide-react';
+import { Server, Power, RefreshCw, Terminal, ShieldCheck, BookOpen } from 'lucide-react';
 import { SshConnectionState } from '../../../common/types/ssh';
 
 interface NavbarProps {
   connectionState: SshConnectionState;
   onOpenConnectModal: () => void;
+  onOpenGuideModal?: () => void;
   onDisconnect: () => void;
   onRefresh: () => void;
   isRefreshing: boolean;
@@ -13,6 +14,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   connectionState,
   onOpenConnectModal,
+  onOpenGuideModal,
   onDisconnect,
   onRefresh,
   isRefreshing,
@@ -40,6 +42,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Connection Status Pill & Actions */}
       <div className="flex items-center gap-3">
+        {onOpenGuideModal && (
+          <button
+            type="button"
+            onClick={onOpenGuideModal}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white transition-colors border border-slate-700/50 text-xs font-medium"
+            title="SSH Connection Guide"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="hidden sm:inline">SSH Guide</span>
+          </button>
+        )}
         {isConnected ? (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/60 text-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />

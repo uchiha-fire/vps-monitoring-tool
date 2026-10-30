@@ -11,6 +11,7 @@ import {
   ArrowLeft,
   ShieldCheck,
   ChevronRight,
+  BookOpen,
 } from 'lucide-react';
 import { SshCredentials, SshProfile } from '../../../common/types/ssh';
 import { parseSshCommand } from '../../../../src/main/ssh/SshConfigParser';
@@ -23,6 +24,7 @@ interface ConnectModalProps {
   onDeleteProfile: (id: string) => void;
   isLoading: boolean;
   errorMessage?: string;
+  onOpenGuide?: () => void;
 }
 
 export const ConnectModal: React.FC<ConnectModalProps> = ({
@@ -33,6 +35,7 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
   onDeleteProfile,
   isLoading,
   errorMessage,
+  onOpenGuide,
 }) => {
   const [step, setStep] = useState<'input' | 'auth'>('input');
   const [tab, setTab] = useState<'command' | 'manual'>('command');
@@ -218,9 +221,24 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
               <span>Step 2: Authentication</span>
             </div>
           </div>
-          <span className="text-[11px] text-slate-500 hidden sm:inline">
-            {step === 'input' ? 'Destination & Flags' : 'Credentials & Keys'}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] text-slate-500 hidden sm:inline">
+              {step === 'input' ? 'Destination & Flags' : 'Credentials & Keys'}
+            </span>
+            {onOpenGuide && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenGuide();
+                }}
+                className="inline-flex items-center gap-1 text-[11px] text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+              >
+                <BookOpen className="w-3 h-3" />
+                <span>SSH Guide</span>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Saved Profiles Quick Bar */}
@@ -376,13 +394,28 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({
 
               {/* Step 1 Actions */}
               <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between gap-3">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 text-xs font-medium transition-colors"
-                >
-                  Cancel
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="px-4 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 text-xs font-medium transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  {onOpenGuide && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onClose();
+                        onOpenGuide();
+                      }}
+                      className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                    >
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>SSH Guide</span>
+                    </button>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
                   {privateKey ? (
                     <>

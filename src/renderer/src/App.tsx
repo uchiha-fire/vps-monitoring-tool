@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navbar } from './components/Navbar';
 import { ConnectModal } from './components/ConnectModal';
+import { SshGuideModal } from './components/SshGuideModal';
 import { OverviewCards } from './components/OverviewCards';
 import { ComposeStackCard } from './components/ComposeStackCard';
 import { ContainerRow } from './components/ContainerRow';
@@ -8,7 +9,7 @@ import { LogViewerModal } from './components/LogViewerModal';
 import { ActionConfirmModal } from './components/ActionConfirmModal';
 import { SshConnectionState, SshCredentials, SshProfile } from '../../common/types/ssh';
 import { DockerOverview, DockerContainer, ContainerAction } from '../../common/types/docker';
-import { Server, RefreshCw, Layers, Box, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Server, RefreshCw, Layers, Box, AlertCircle, CheckCircle2, BookOpen } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [connectionState, setConnectionState] = useState<SshConnectionState>({
@@ -17,6 +18,7 @@ export const App: React.FC = () => {
   const [overview, setOverview] = useState<DockerOverview | null>(null);
   const [profiles, setProfiles] = useState<SshProfile[]>([]);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
+  const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectError, setConnectError] = useState<string | undefined>(undefined);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -246,6 +248,7 @@ export const App: React.FC = () => {
       <Navbar
         connectionState={connectionState}
         onOpenConnectModal={() => setIsConnectModalOpen(true)}
+        onOpenGuideModal={() => setIsGuideModalOpen(true)}
         onDisconnect={handleDisconnect}
         onRefresh={refreshOverview}
         isRefreshing={isRefreshing}
@@ -266,13 +269,22 @@ export const App: React.FC = () => {
                 monitor, and stream logs from running Docker and Docker Compose services.
               </p>
             </div>
-            <button
-              onClick={() => setIsConnectModalOpen(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xl shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Server className="w-4 h-4" />
-              Connect with SSH Command
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button
+                onClick={() => setIsConnectModalOpen(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-xl shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto justify-center"
+              >
+                <Server className="w-4 h-4" />
+                Connect with SSH Command
+              </button>
+              <button
+                onClick={() => setIsGuideModalOpen(true)}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/70 text-xs font-semibold shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] w-full sm:w-auto justify-center"
+              >
+                <BookOpen className="w-4 h-4 text-indigo-400" />
+                SSH Guide
+              </button>
+            </div>
           </div>
         ) : overview ? (
           /* Connected: Overview & Services Explorer */
@@ -350,6 +362,14 @@ export const App: React.FC = () => {
         onDeleteProfile={handleDeleteProfile}
         isLoading={isConnecting}
         errorMessage={connectError}
+        onOpenGuide={() => setIsGuideModalOpen(true)}
+      />
+
+      {/* SSH Connection Guide Modal */}
+      <SshGuideModal
+        isOpen={isGuideModalOpen}
+        onClose={() => setIsGuideModalOpen(false)}
+        onOpenConnectModal={() => setIsConnectModalOpen(true)}
       />
 
       {/* Real-time Log Viewer Modal */}

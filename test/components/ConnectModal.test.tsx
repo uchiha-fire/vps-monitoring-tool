@@ -174,4 +174,28 @@ describe('ConnectModal Component (TDD)', () => {
       undefined
     );
   });
+
+  it('should call onOpenGuide when guide button in ConnectModal is clicked', () => {
+    const onOpenGuideMock = vi.fn();
+    const onCloseMock = vi.fn();
+
+    render(
+      <ConnectModal
+        isOpen={true}
+        onClose={onCloseMock}
+        onConnect={vi.fn()}
+        profiles={[]}
+        onDeleteProfile={vi.fn()}
+        isLoading={false}
+        onOpenGuide={onOpenGuideMock}
+      />
+    );
+
+    const guideButtons = screen.getAllByRole('button', { name: /SSH Guide/i });
+    expect(guideButtons.length).toBeGreaterThan(0);
+    fireEvent.click(guideButtons[0]);
+
+    expect(onCloseMock).toHaveBeenCalled();
+    expect(onOpenGuideMock).toHaveBeenCalled();
+  });
 });
