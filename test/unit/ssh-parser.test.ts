@@ -85,7 +85,7 @@ describe('SshConfigParser (TDD)', () => {
     });
 
     it('should parse multi-line command with line continuations (backslash) and multiple -L flags', () => {
-      const multilineCmd = `ssh -i ~/.ssh/id_ed25519_larry_ai_ss -p 448 \\
+      const multilineCmd = `ssh -i ~/.ssh/id_ed25519_sample -p 448 \\
     -L 4000:localhost:4000 \\
     -L 9099:localhost:9099 \\
     -L 4445:localhost:4445 \\
@@ -97,34 +97,34 @@ describe('SshConfigParser (TDD)', () => {
     -L 5055:localhost:5055 \\
     -L 5063:localhost:5063 \\
     -L 6061:localhost:6061 \\
-    ai@vibecloser.com`;
+    user@example.com`;
 
       const result = parseSshCommand(multilineCmd);
       expect(result).toEqual({
-        host: 'vibecloser.com',
-        username: 'ai',
+        host: 'example.com',
+        username: 'user',
         port: 448,
-        privateKey: '~/.ssh/id_ed25519_larry_ai_ss',
+        privateKey: '~/.ssh/id_ed25519_sample',
       });
     });
 
     it('should parse destination placed BEFORE flags without being overridden', () => {
-      const cmd = 'ssh ai@vibecloser.com -i ~/.ssh/id_ed25519 -p 448 -L 4000:localhost:4000';
+      const cmd = 'ssh user@example.com -i ~/.ssh/id_ed25519 -p 448 -L 4000:localhost:4000';
       const result = parseSshCommand(cmd);
       expect(result).toEqual({
-        host: 'vibecloser.com',
-        username: 'ai',
+        host: 'example.com',
+        username: 'user',
         port: 448,
         privateKey: '~/.ssh/id_ed25519',
       });
     });
 
     it('should parse destination placed IN THE MIDDLE of flags', () => {
-      const cmd = 'ssh -p 448 ai@vibecloser.com -L 4000:localhost:4000 -L 9099:localhost:9099';
+      const cmd = 'ssh -p 448 user@example.com -L 4000:localhost:4000 -L 9099:localhost:9099';
       const result = parseSshCommand(cmd);
       expect(result).toEqual({
-        host: 'vibecloser.com',
-        username: 'ai',
+        host: 'example.com',
+        username: 'user',
         port: 448,
       });
     });
