@@ -5,6 +5,17 @@ on:
     tags:
       - 'v*.*.*'
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag Name (e.g. v1.0.0)'
+        required: true
+        type: string
+        default: 'v1.0.0'
+      create_release:
+        description: 'Publish binaries to GitHub Releases'
+        required: true
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -19,10 +30,13 @@ jobs:
         include:
           - os: ubuntu-latest
             target: --linux AppImage deb rpm
+            artifact_name: dockmon-linux
           - os: windows-latest
             target: --win nsis portable
+            artifact_name: dockmon-windows
           - os: macos-latest
             target: --mac dmg zip --arm64 --x64
+            artifact_name: dockmon-macos
 
     steps:
       - name: Checkout Source Code
@@ -55,10 +69,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            release/*.AppImage
+            release/*.deb
+            release/*.rpm
+            release/*.exe
+            release/*.dmg
+            release/*.zip
+          retention-days: 30
+
       - name: Upload Release Artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == 'true'
         with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           files: |
             release/*.AppImage
             release/*.deb

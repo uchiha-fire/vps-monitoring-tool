@@ -1,0 +1,110 @@
+name: Build macOS Binaries (Apple Silicon & Intel)
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Publish binaries to GitHub Releases'
+        required: true
+        type: boolean
+        default: true
+      tag_name:
+        description: 'Release Tag Name (e.g. v1.0.0)'
+        required: true
+        type: string
+        default: 'v1.0.0'
+      deploy_to_vps:
+        description: 'Sync built DMGs to VPS downloads directory if secrets are configured'
+        required: false
+        type: boolean
+        default: false
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    name: Build macOS DMG & ZIP (${{ matrix.arch }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            target: --mac dmg zip --arm64
+            label: Apple Silicon (M1/M2/M3/M4)
+          - arch: x64
+            target: --mac dmg zip --x64
+            label: Intel 64-bit
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Test Suite (TDD)
+        run: npm test
+
+      - name: Build Application Bundle
+        run: npm run build
+
+      - name: Compile macOS ${{ matrix.label }}
+        run: npx electron-builder ${{ matrix.target }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Inspect & Compute Checksums
+        run: |
+          echo "=== Built Artifacts ==="
+          ls -lh release/
+          echo "=== SHA-256 Checksums ==="
+          shasum -a 256 release/*.dmg release/*.zip
+
+      - name: Upload GitHub Actions Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dockmon-macos-${{ matrix.arch }}
+          path: |
+            release/*.dmg
+            release/*.zip
+          retention-days: 30
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == 'true'
+        with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
+          files: |
+            release/*.dmg
+            release/*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy DMGs to Production VPS
+        uses: appleboy/scp-action@master
+        if: (github.event.inputs.deploy_to_vps == 'true') && env.VPS_HOST != ''
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME || 'root' }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          source: "release/*.dmg,release/*.zip"
+          target: "/var/www/dockmon/downloads"
+          strip_components: 1
